@@ -24,7 +24,7 @@ public class Profile {
 
     Profile(String name) {
 	this.name = name;
-	save_file = name + ".txt";
+	save_file = "saved_profiles/" + name + ".txt";
 	lvl = 1;
 	xp = 0;
 	base_damage = 5;
@@ -38,6 +38,35 @@ public class Profile {
 	current_mana = base_mana;
 	abilities = new Ability[10];
     }
+
+    
+    // Saved Character
+    Profile(String name, int lvl, int xp, int base_damage,
+	    int damage_die, int damage_bonus, int defense,
+	    Item[] inventory, int base_hp, int current_hp,
+	    int base_mana, int current_mana, Ability[] abilities) {
+	this.name = name;
+	save_file = "saved_profiles/" + name + ".txt";
+	this.lvl = lvl;
+	this.xp = xp;
+	this.base_damage = base_damage;
+	this.damage_die = damage_die;
+	this.damage_bonus = damage_bonus;
+	this.defense = defense;
+	this.defending = false;
+	this.inventory = inventory;
+	this.base_hp = base_hp;
+	this.current_hp = current_hp;
+	this.base_mana = base_mana;
+	this.current_mana = current_mana;
+	this.abilities = abilities;
+    }
+    
+
+
+
+
+
 
 
 
@@ -58,7 +87,19 @@ public class Profile {
     public void save() {
 	try {
 	    PrintWriter writer = new PrintWriter(save_file, "UTF-8");
-	    writer.println("");
+	    writer.println(this.name);
+            writer.println(this.lvl);
+            writer.println(this.xp);
+            writer.println(this.base_damage);
+            writer.println(this.damage_die);
+            writer.println(this.damage_bonus);
+            writer.println(this.defense);
+            writer.println(this.inventory.toString());
+            writer.println(this.base_hp);
+            writer.println(this.current_hp);
+            writer.println(this.base_mana);
+            writer.println(this.current_mana);
+            writer.println(this.abilities.toString());
 	    writer.close();
 	} catch (IOException e) {
 	    // do something

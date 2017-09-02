@@ -1,13 +1,89 @@
 import java.util.*;
 import java.lang.Math.*;
 import java.util.concurrent.TimeUnit;
+import java.io.*;
 
 public class PlayGame {
+    /*-------------------------------------------------*
+     *                                                 *
+     *                 CHARACTER LOAD                  *
+     *                                                 *
+     *-------------------------------------------------*
+     */
+    public static Profile loadChar(String char_name) throws InterruptedException {
+	try(BufferedReader br = new BufferedReader(new FileReader("saved_profiles/" + char_name.toLowerCase() + ".txt"))) {
+		br.readLine();
+		int lvl = Integer.parseInt(br.readLine());
+		int xp = Integer.parseInt(br.readLine());
+		int base_dmg = Integer.parseInt(br.readLine());
+		int dmg_die = Integer.parseInt(br.readLine());
+		int dmg_bonus = Integer.parseInt(br.readLine());
+		int dfn = Integer.parseInt(br.readLine());
+		Item[] inv = loadItems(br.readLine());
+		int base_hp = Integer.parseInt(br.readLine());
+		int current_hp = Integer.parseInt(br.readLine());
+		int base_mana = Integer.parseInt(br.readLine());
+		int current_mana = Integer.parseInt(br.readLine());
+		Ability[] abilities = loadAbilities(br.readLine());
+		
+		Profile player = new Profile(char_name, lvl, xp, base_dmg,
+					    dmg_die, dmg_bonus, dfn, inv,
+					    base_hp, current_hp, base_mana,
+					    current_mana, abilities);
+		typeMsg("Player experience: " + xp, 1);
+		return player;
+		
+	    } catch(IOException e) {
+	    typeMsg("Character not found...", 2);
+		}
+    
+	return new Profile(char_name);
+    }
+
+
+    
+    public static Item[] loadItems(String s) {
+	String[] all_items = s.split(" ");
+	int l = all_items.length;
+
+	Item[] I = new Item[l];
+	// FILL IN
+	return I;
+    }
+
+
+
+    public static Ability[] loadAbilities(String s) {
+	String[] all_abilities = s.split(" ");
+	int l = all_abilities.length;
+
+	//FILL IN
+	Ability[] A = new Ability[l];
+	//FILL IN
+	return A;
+    }
+
+
+    /*-------------------------------------------------*
+     *                                                 *
+     *                                                 * 
+     *                 GAME  MESSAGING                 *
+     *                       &                         *
+     *                  UPDATE METHODS                 *
+     *                                                 *
+     *                                                 * 
+     *-------------------------------------------------*
+     */
 
     static int MSG_SPEED = 40; // how fast the "computer" will type. 0 = instant typing
     static int LB_DELAY = 150; // To delay printing line breaks
     static Scanner PROMPT = new Scanner(System.in);
 
+    
+    private static String capitalize(String line) {
+	return Character.toUpperCase(line.charAt(0)) + line.substring(1);
+    }
+    
 
     // For printing out messages to the user. Computer is typing feel.
     public static void typeMsg(String msg, int lbreaks) throws InterruptedException {
@@ -57,6 +133,15 @@ public class PlayGame {
     }
 
 
+    /////////////////////////////////////////////////////////////////
+    //                                                             //
+    //                                                             //
+    //                                                             //
+    //                          MAIN METHOD                        // 
+    //                                                             //
+    //                                                             //
+    //                                                             //
+    /////////////////////////////////////////////////////////////////
 
     public static void main(String[] args) throws InterruptedException {
 
@@ -81,15 +166,33 @@ public class PlayGame {
 	 */
 	
 	// Q1 - PLAYER CREATION
-	String character_name = prompt("What would you like the name of your character to be?   ", 2);
-	Profile player = new Profile(character_name);
+	Profile player = new Profile("dummy");
+	String character_name = "";
+
+	String player_decision = prompt("Do you wish to load a saved character?  ", 1);
 	
-	typeMsg("Hmmm...", 1);
-	typeMsg("Well then. Welcome to my game " + character_name, 2);
+	if (player_decision.toLowerCase().equals("yes") ) {
+	    character_name = prompt("What is the name of your character?  ", 1);
+	    typeMsg("Ah, good to see you again " +
+		    capitalize(character_name), 2);
+	    player = loadChar(character_name);
+	}
+
+	else {
+	    character_name = prompt("What would you like the name of your character to be?   ", 2);
+	    player = new Profile(character_name);
+
+	    typeMsg("Hmmm...", 1);
+	    typeMsg("Well then. Welcome to my game " 
+		    + capitalize(character_name), 2);
+	}	
+	///// DONE CREATING PLAYER /////
+
+
 
 	// Ask for battle(s)
 	while( true ) {	    
-	    String player_decision = prompt("Would you like to fight a monster?   ", 1);
+	    player_decision = prompt("Would you like to fight a monster?   ", 1);
 	    // typeMsg("You typed:" + player_decision, 1);
 	    if ( player_decision.equals("no") ) {
 		typeMsg("Okay then, bye", 3);
@@ -197,12 +300,15 @@ public class PlayGame {
 		updateMsg("Sorry, your input was unintelligible.", 2);
 	    }
 
-	    // Ask for another battle
-	    updateMsg("Would you like to fight another monster? ", 1);
 	} 
+	
+	// SAVE PLAYER DATA
+	player.save();
+	typeMsg("Player data saved, please come back...", 1);
+	Thread.sleep(100);
+	typeMsg(capitalize(character_name), 2);
 
-
-	// CLOSE SCANNER                                                                                                                                             
+	// CLOSE SCANNER                                                        
 	PROMPT.close();
 
     } // END OF MAIN METHOD
