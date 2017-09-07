@@ -5,13 +5,11 @@ JC = javac
 	$(JC) $(JFLAGS) $*.java
 
 CLASSES = \
-	Class.java \
 	Item.java \
 	Enemy.java \
-	Ability.java \
 	PlayGame.java \
-	Spells.java \
-	Profile.java 
+	Profile.java \
+	Cyborg.java 
 
 default: classes
 

@@ -16,20 +16,28 @@ public class PlayGame {
 		int lvl = Integer.parseInt(br.readLine());
 		int xp = Integer.parseInt(br.readLine());
 		int base_dmg = Integer.parseInt(br.readLine());
-		int dmg_die = Integer.parseInt(br.readLine());
 		int dmg_bonus = Integer.parseInt(br.readLine());
 		int dfn = Integer.parseInt(br.readLine());
 		Item[] inv = loadItems(br.readLine());
 		int base_hp = Integer.parseInt(br.readLine());
 		int current_hp = Integer.parseInt(br.readLine());
-		int base_mana = Integer.parseInt(br.readLine());
-		int current_mana = Integer.parseInt(br.readLine());
-		Ability[] abilities = loadAbilities(br.readLine());
-		
+		int base_energy = Integer.parseInt(br.readLine());
+		int current_energy = Integer.parseInt(br.readLine());
+		int strength = Integer.parseInt(br.readLine());
+		int tech = Integer.parseInt(br.readLine());
+		int constitution = Integer.parseInt(br.readLine());
+		int agility = Integer.parseInt(br.readLine());
+		int stealth = Integer.parseInt(br.readLine());
+		int x_pos = Integer.parseInt(br.readLine());
+		int y_pos = Integer.parseInt(br.readLine());
+
 		Profile player = new Profile(char_name, lvl, xp, base_dmg,
-					    dmg_die, dmg_bonus, dfn, inv,
-					    base_hp, current_hp, base_mana,
-					    current_mana, abilities);
+					     dmg_bonus, dfn, inv, base_hp, 
+					     current_hp, base_energy,
+					     current_energy, strength, tech, 
+					     constitution, agility, stealth,
+					     x_pos, y_pos);
+
 		typeMsg("Player experience: " + xp, 1);
 		return player;
 		
@@ -52,18 +60,53 @@ public class PlayGame {
     }
 
 
+    public static Profile createCharacter(String name) throws InterruptedException {
+	String choice = updatePrompt("Please select a class\n" + 
+				     "1| Cyborg\n" +
+				     "2| Engineer\n" + 
+				     "3| Pilot\n" +
+				     "4| Assassin\n" + 
+				     "5| Android\n" + 
+				     "6| Researcher", 1);
+	do {
+	    if ( choice.equals("1") ) {
+		typeMsg("A God damn cyborg, fuck me...", 1);
+		return new Cyborg(name);
+	    }
+	    
+	    else if ( choice.equals("2") ) {
+		typeMsg("Engineers, the lasers they build can be... well... annoying", 1);
+		return new Engineer(name);
+	    }
+	    
+	    else if ( choice.equals("3") ) {
+		typeMsg("Who doesn't like flying shit? Do a barrel roll pilot!", 1);
+		return new Pilot(name);
+	    }
+	    
+	    else if ( choice.equals("4") ) {
+		typeMsg("No one should trust you...\nNot even yourself!!! Assassin!", 1);
+		return new Assassin(name);
+	    }
 
-    public static Ability[] loadAbilities(String s) {
-	String[] all_abilities = s.split(" ");
-	int l = all_abilities.length;
+	    else if ( choice.equals("5") ) {
+		typeMsg("100001110011010101011101 beep boop beep bop 11000lol1", 1);
+		return new Android(name);
+	    }
+	    
+	    else if ( choice.equals("6") ) {
+		typeMsg("I bet you know where the library is... NERD!!! Or rather, researcher who's going to buff all our shit, thanks in advance", 1);
+		return new Researcher(name);
+	    }
+	    
+	    else
+		choice = prompt("Please enter a valid option idiot   ", 2);
 
-	//FILL IN
-	Ability[] A = new Ability[l];
-	//FILL IN
-	return A;
+	} while (true);
+	
     }
 
-
+		    
     /*-------------------------------------------------*
      *                                                 *
      *                                                 * 
@@ -116,6 +159,9 @@ public class PlayGame {
 	return response.toLowerCase();
     }
 
+
+    // UPDATES are for instantly printing larger chunks of text,
+    // such as a menu of options, but still with trailing line breaks.
     public static String updatePrompt(String msg, int lbreaks) throws InterruptedException {
 	updateMsg(msg, 1);
 	String response = PROMPT.nextLine();
@@ -124,20 +170,19 @@ public class PlayGame {
 	return response.toLowerCase();
     }
 
-
-
-    // For instant printing with delayed trailing line breaks
     public static void updateMsg(String msg, int lbreaks) throws InterruptedException {
 	System.out.print(msg);
 	typeMsg("", lbreaks);
     }
 
 
+
+
     /////////////////////////////////////////////////////////////////
     //                                                             //
     //                                                             //
     //                                                             //
-    //                          MAIN METHOD                        // 
+    //                         MAIN METHOD                         // 
     //                                                             //
     //                                                             //
     //                                                             //
@@ -180,23 +225,33 @@ public class PlayGame {
 
 	else {
 	    character_name = prompt("What would you like the name of your character to be?   ", 2);
-	    player = new Profile(character_name);
+	   
+	    player = createCharacter(character_name);
 
 	    typeMsg("Hmmm...", 1);
 	    typeMsg("Well then. Welcome to my game " 
-		    + capitalize(character_name), 2);
+		    + capitalize(player.getName() ), 2);
 	}	
 	///// DONE CREATING PLAYER /////
 
 
 
 	// Ask for battle(s)
-	while( true ) {	    
-	    player_decision = prompt("Would you like to fight a monster?   ", 1);
+	while( true ) {
+	    typeMsg("!!!Press 'r' at any time while you're not in combat to rename your character!!!", 2);
+	    
+	    player_decision = prompt("Would you like to fight a challenger?   ", 1);
 	    // typeMsg("You typed:" + player_decision, 1);
 	    if ( player_decision.equals("no") ) {
 		typeMsg("Okay then, bye", 3);
 		break;
+	    }
+
+	    else if ( player_decision.equals("r") ) {
+		String new_name = prompt("What would you like to rename your character as?   ", 1);
+		player.changeName(new_name);
+		typeMsg("Ah, that name suits you well... " + capitalize(new_name) + " I like it...", 2);
+		typeMsg("So then, " + capitalize(new_name) + "...", 1);
 	    }
 
 	    // Initiate a battle
@@ -204,7 +259,7 @@ public class PlayGame {
 		typeMsg("Very well, let's see how you fare", 10);
 		
 		//Create a new enemy
-		Enemy e = new Enemy();
+		Enemy e = new Enemy( player.getLvl() );
 
 		int turn_counter = 0;
 
@@ -225,9 +280,9 @@ public class PlayGame {
 
 			// ask for a command
 			String player_action = updatePrompt("CHOOSE YOUR ACTION \n" +
-							    "1| to attack\n" + 
-							    "2| to defend\n" + 
-							    "3| to cast a spell\n\n", 1 );
+							    "1| Attack\n" + 
+							    "2| Defend\n" + 
+							    "3| Special Ability\n\n", 1 );
  
 			// make sure command is valid
 			while ( true ) {
@@ -237,7 +292,7 @@ public class PlayGame {
 
 			    // attack
 			    if (player_action.equals("1") ) {
-				typeMsg("You swing your sword valiantly at the enemy", 1);
+				typeMsg("You punch the enemy with your cold steel robot fist", 1);
 				player.attack(e);
 				break;
 			    }
@@ -248,7 +303,7 @@ public class PlayGame {
 			    }
 			    // cast
 			    else if (player_action.equals("3") ) {
-				player.castSpell(e);
+				player.specialAbility(e); // Changed from spell
 				break;
 			    }
 			    // incorrect input, get new one
@@ -267,6 +322,7 @@ public class PlayGame {
 
 			// for dramatic effect
 			TimeUnit.SECONDS.sleep(1);
+
 			// Player death
 			if ( player.getHP() <= 0 ) {
 			    typeMsg("You have died", 1);
@@ -306,11 +362,12 @@ public class PlayGame {
 	player.save();
 	typeMsg("Player data saved, please come back...", 1);
 	Thread.sleep(100);
-	typeMsg(capitalize(character_name), 2);
+	typeMsg(capitalize( player.getName() ), 2);
 
 	// CLOSE SCANNER                                                        
 	PROMPT.close();
 
     } // END OF MAIN METHOD
+
 } // END OF CLASS
 

@@ -1,0 +1,11 @@
+
+
+public class Cyborg extends Profile {
+
+
+    Cyborg(String name) {
+	super(name);
+	
+
+    }
+}
