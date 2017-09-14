@@ -60,51 +60,7 @@ public class PlayGame {
     }
 
 
-    public static Profile createCharacter(String name) throws InterruptedException {
-	String choice = updatePrompt("Please select a class\n" + 
-				     "1| Cyborg\n" +
-				     "2| Engineer\n" + 
-				     "3| Pilot\n" +
-				     "4| Assassin\n" + 
-				     "5| Android\n" + 
-				     "6| Researcher", 1);
-	do {
-	    if ( choice.equals("1") ) {
-		typeMsg("A God damn cyborg, fuck me...", 1);
-		return new Cyborg(name);
-	    }
-	    
-	    else if ( choice.equals("2") ) {
-		typeMsg("Engineers, the lasers they build can be... well... annoying", 1);
-		return new Engineer(name);
-	    }
-	    
-	    else if ( choice.equals("3") ) {
-		typeMsg("Who doesn't like flying shit? Do a barrel roll pilot!", 1);
-		return new Pilot(name);
-	    }
-	    
-	    else if ( choice.equals("4") ) {
-		typeMsg("No one should trust you...\nNot even yourself!!! Assassin!", 1);
-		return new Assassin(name);
-	    }
-
-	    else if ( choice.equals("5") ) {
-		typeMsg("100001110011010101011101 beep boop beep bop 11000lol1", 1);
-		return new Android(name);
-	    }
-	    
-	    else if ( choice.equals("6") ) {
-		typeMsg("I bet you know where the library is... NERD!!! Or rather, researcher who's going to buff all our shit, thanks in advance", 1);
-		return new Researcher(name);
-	    }
-	    
-	    else
-		choice = prompt("Please enter a valid option idiot   ", 2);
-
-	} while (true);
-	
-    }
+       
 
 		    
     /*-------------------------------------------------*
@@ -238,7 +194,7 @@ public class PlayGame {
 
 	// Ask for battle(s)
 	while( true ) {
-	    typeMsg("!!!Press 'r' at any time while you're not in combat to rename your character!!!", 2);
+	    updateMsg("!!!Press 'r' at any time while you're not in combat to rename your character!!!", 2);
 	    
 	    player_decision = prompt("Would you like to fight a challenger?   ", 1);
 	    // typeMsg("You typed:" + player_decision, 1);
