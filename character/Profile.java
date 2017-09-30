@@ -1,6 +1,14 @@
+package character;
+
 import java.lang.Math;
 import java.util.*;
 import java.io.*;
+
+//My Classes
+import items.*;
+import abilities.*;
+import enemies.*;
+import run.PlayGame;
 
 public class Profile {
 
@@ -28,9 +36,17 @@ public class Profile {
     private boolean engaged;
     private Enemy engagedWith;
 
+    //SLOTS
+    public Item head;
+    public Item left_arm;
+    public Item right_arm;
+    public Item body;
+    public Item legs;
+    public Item eyes;
+
     //public Party party; <-- Need to make
 
-    Profile(String name) {
+    public Profile(String name) {
 	this.name = name;
 	save_file = "saved_profiles/" + name + ".txt";
 	lvl = 1;
@@ -54,7 +70,7 @@ public class Profile {
 
     
     // Saved Character
-    Profile(String name, int lvl, int xp, int base_damage,
+    public Profile(String name, int lvl, int xp, int base_damage,
 	    int damage_bonus, int defense, Item[] inventory, 
 	    int base_hp, int current_hp, int base_energy, 
 	    int current_energy, int strength, int tech, 
@@ -228,6 +244,10 @@ public class Profile {
 	return this.base_damage;
     }
 
+    public int getDmgBonus() {
+	return this.damage_bonus;
+    }
+
     
     // ---------- DEFENSE & RESISTANCE ---------- //
     public void defend() throws InterruptedException {
@@ -258,7 +278,6 @@ public class Profile {
 	return (int) (Math.random() * 101);
     }
 
-
     // returns new damage value so we can still keep the old one
     public int decreaseAttack(int n) {
 	return this.base_damage - n;
@@ -283,11 +302,12 @@ public class Profile {
     
    
 
-    // ------------ HIT POINTS ----------- //
+    // ------------ HIT POINTS & ENERGY ----------- //
     public int getHP() {
 	return this.current_hp;
     }
-    
+
+    // Remove and add to abilities
     public void heal(int n) throws InterruptedException {
 	this.current_hp += n;
 	if (this.current_hp > this.base_hp) 
@@ -311,6 +331,14 @@ public class Profile {
 	}
 	else
 	    this.current_energy += n;
+    }
+
+    public int getEnergy() {
+	return this.current_energy;
+    }
+
+    public int getBaseEnergy() {
+	return this.base_energy;
     }
     
 

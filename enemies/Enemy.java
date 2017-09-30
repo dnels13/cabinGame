@@ -1,26 +1,34 @@
+package enemies;
+
 import java.lang.Math;
 import java.util.*;
 
+//My Classes
+import character.*;
+import run.PlayGame;
+import abilities.*;
+
 public class Enemy {
     String name;
-    int lvl;
-    int xp; // How much is earned when defeating it
-    int base_damage;
-    int damage_die;
-    int damage_decrease; // from curses or hostile spells
-    int base_health;
-    int current_health;
-    boolean immobile;
-    int defense;
-    int strength;
-    int tech;
-    int constitution;
-    int agility;
-    int stealth;
-    int current_energy;
+    private int lvl;
+    private int xp; // How much is earned when defeating it
+    private int base_damage;
+    private int damage_die;
+    private int damage_decrease; // from curses or hostile spells
+    private int base_health;
+    private int current_health;
+    private boolean immobile;
+    private int defense;
+    private int strength;
+    private int tech;
+    private int constitution;
+    private int agility;
+    private int stealth;
+    private int base_energy;
+    private int current_energy;
     
 
-    Enemy() {
+    public Enemy() {
 	name = "Unknown";
 	lvl = 0;
 	xp = (int)(Math.random() * 10) + 10;
@@ -39,8 +47,8 @@ public class Enemy {
 	current_energy = 50;
     }
 
-    Enemy(int player_lvl) {
-	name = "Fuck you";
+    public Enemy(int player_lvl) {
+	name = "Xenon: Destroyer of You";
 	lvl = player_lvl;
 	xp = (int) (Math.random() * (10 * this.lvl));
 	base_damage = 2 * lvl;
@@ -57,7 +65,7 @@ public class Enemy {
 	current_energy = (int)(50 * 1.25);
     }
 
-    Enemy(String name, int lvl, int xp, int base_damage, int damage_die, 
+    public Enemy(String name, int lvl, int xp, int base_damage, int damage_die, 
 	  int base_health, int current_health, int defense, int strength, 
 	  int tech, int constitution, int agility, int stealth) {
 	this.name = name;
@@ -175,10 +183,22 @@ public class Enemy {
     }
 
 
+    // ------------ Energy ------------ //
+    public int baseEnergy() {
+	return this.base_energy;
+    }
+
+    public int getEnergy() {
+	return this.current_energy;
+    }
+
+
     // ------------ XP ------------ //
     public int getXP() {
 	return this.xp;
     }
     
-	
+    public int getLvl() {
+	return this.lvl;
+    }
 }

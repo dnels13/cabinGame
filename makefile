@@ -5,9 +5,10 @@ JC = javac
 	$(JC) $(JFLAGS) $*.java
 
 CLASSES = \
+	abilities/Abilities.java \
 	items/Item.java \
 	enemies/Enemy.java \
-	PlayGame.java \
+	run/PlayGame.java \
 	character/Profile.java  
 
 default: classes
