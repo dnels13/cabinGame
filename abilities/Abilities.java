@@ -62,27 +62,28 @@ public class Abilities {
     
     public static void armCannon(Profile player, Enemy e) throws InterruptedException {
 	
-	if ( energyCheck(player, 40) )
-	    return;
-	
+	if ( energyCheck(player, 40) ) {	
 
-	boolean hit = ( player.attackRoll() + player.getLvl() ) > e.getAgility();
-	player.spendEnergy(40);
-	
-	if ( hit ) {
-	    int damage_roll = (int) (Math.random() * player.getDmg()) + player.getDmg();
-            int total_damage = (int) ( (1 + ( player.getLvl() / 50.0 ) ) * 
-				       (damage_roll + player.getDmgBonus()) );
-	    e.takeDamage(total_damage);
-
-	    PlayGame.typeMsg("Enemy is blasted for " + total_damage + " damage.", 2);
+	    boolean hit = ( player.attackRoll() + player.getLvl() ) > e.getAgility();
+	    player.spendEnergy(40);
+	    
+	    if ( hit ) {
+		int damage_roll = (int) (Math.random() * player.getDmg()) + player.getDmg();
+		int total_damage = (int) ( (1 + ( player.getLvl() / 50.0 ) ) * 
+					   (damage_roll + player.getDmgBonus()) );
+		e.takeDamage(total_damage);
+		
+		PlayGame.typeMsg("Enemy is blasted for " + total_damage + " damage.", 2);
 	}
-
-	else
-	    PlayGame.typeMsg("You missed your target...", 2);
-	
-    } // END OF ARMCANNON
+	    
+	    else
+		PlayGame.typeMsg("You missed your target...", 2);
+	    
+	} // END OF ARMCANNON
     
+	else
+	    PlayGame.typeMsg("You don't have enough energy to do that!", 2);
+    }
 
 
     public static void stun(Profile player, Enemy e) throws InterruptedException {

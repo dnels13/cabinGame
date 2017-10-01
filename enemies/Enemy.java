@@ -50,10 +50,10 @@ public class Enemy {
     public Enemy(int player_lvl) {
 	name = "Xenon: Destroyer of You";
 	lvl = player_lvl;
-	xp = (int) (Math.random() * (10 * this.lvl));
-	base_damage = 2 * lvl;
+	xp = (int) (Math.random() * (this.lvl * 3)) + (this.lvl * 2);
+	base_damage = 3 * lvl;
 	damage_decrease = 0;
-	base_health = 10 + (int)(Math.random() * (lvl * 10) );
+	base_health = 10 + (4 * (int)(Math.random() * (lvl * 4)) );
 	current_health = base_health;
 	immobile = false;
 	defense = (int)(1.5 * lvl);
